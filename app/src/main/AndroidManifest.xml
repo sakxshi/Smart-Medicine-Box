@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.smartmedicinebox">
 
@@ -15,22 +14,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartMedicineBox">
         <activity
-            android:name="com.example.smartmedicinebox.activities.SignInActivity"
+            android:name=".activities.MyProfileActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".activities.SignInActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.example.smartmedicinebox.activities.SignUpActivity"
+            android:name=".activities.SignUpActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.example.smartmedicinebox.activities.IntroActivity"
+            android:name=".activities.IntroActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.example.smartmedicinebox.activities.SplashActivity"
+            android:name=".activities.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -41,10 +45,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.smartmedicinebox.activities.MainActivity"
+            android:name=".activities.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

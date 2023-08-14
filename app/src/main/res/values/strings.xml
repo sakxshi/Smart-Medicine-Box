@@ -15,13 +15,16 @@
     <string name="email">Email</string>
     <string name="sign_in_description_text">Enter your email id and password to sign in.</string>
 
-    <!-- progress dilaog -->
+    <!-- progress dialog -->
     <string name="please_click_back_again_to_exit">Please click back again to exit.</string>
     <string name="please_wait">Please Wait…</string>
-    <string name="please_click_back_agian_to_exit">please click back again to exit</string>
 
     <!-- nav header main -->
     <string name="nav_my_profile">My Profile</string>
     <string name="nav_sign_out">Sign Out</string>
+
+    <!-- profile -->
+    <string name="update">UPDATE</string>
+    <string name="my_profile_title">My Profile</string>
 
 </resources>

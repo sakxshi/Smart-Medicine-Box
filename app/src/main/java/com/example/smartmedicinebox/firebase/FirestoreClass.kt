@@ -1,5 +1,8 @@
 package com.example.smartmedicinebox.firebase
 
+import android.app.Activity
+import com.example.smartmedicinebox.activities.MainActivity
+import com.example.smartmedicinebox.activities.MyProfileActivity
 import com.example.smartmedicinebox.activities.SignInActivity
 import com.example.smartmedicinebox.activities.SignUpActivity
 import com.example.smartmedicinebox.models.User
@@ -29,7 +32,7 @@ class FirestoreClass {
 
     }
 
-    fun signInUser(activity: SignInActivity){
+    fun loadUserData(activity: Activity){
 
         mFirestore.collection(Constants.USERS)
             .document(getCurrentUserID())
@@ -37,7 +40,19 @@ class FirestoreClass {
             .addOnSuccessListener { document ->
                 val loggedInUser = document.toObject(User :: class.java)
                 if(loggedInUser != null) {
-                    activity.signInSuccess(loggedInUser)
+
+                    when (activity) {
+                        is SignInActivity -> {
+                            activity.signInSuccess(loggedInUser)                //if the activity passed is SignInActivity, sign in the user
+                        }
+                        is MainActivity ->{
+                            activity.updateNavigationUserDetails(loggedInUser)  //if the activity passed is the MainActivity, update the user's details
+                        }
+                        is MyProfileActivity ->{
+                            activity.setUserDataInUI(loggedInUser)              //if the activity passed is MyProileActivity, load the user's details
+
+                        }
+                    }
                 }
             }
 

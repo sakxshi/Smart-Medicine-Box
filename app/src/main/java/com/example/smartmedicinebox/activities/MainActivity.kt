@@ -3,10 +3,12 @@ package com.example.smartmedicinebox.activities
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Toast
+import android.widget.TextView
 import androidx.core.view.GravityCompat
 import com.example.smartmedicinebox.R
 import com.example.smartmedicinebox.databinding.ActivityMainBinding
+import com.example.smartmedicinebox.firebase.FirestoreClass
+import com.example.smartmedicinebox.models.User
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 
@@ -23,7 +25,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         setContentView(view)
 
         setUpActionBar()
+
         binding.navView.setNavigationItemSelectedListener(this)
+
+        FirestoreClass().loadUserData(this)
 
     }
 
@@ -60,7 +65,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.nav_my_profile  -> {              //accessing my profile present in activity_main_drawer
-                Toast.makeText(this, "My Profile", Toast.LENGTH_SHORT).show()
+
+                startActivity(Intent(this, MyProfileActivity::class.java))     //moving from drawer layout to MyProfileActivity
             }
             R.id.nav_sign_out -> {
                 FirebaseAuth.getInstance().signOut()
@@ -74,5 +80,17 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         binding.drawerLayout.closeDrawer(GravityCompat.START)
 
         return true       //just because the function expects a boolean return type value
+    }
+    //this function is to update the user details
+    fun updateNavigationUserDetails(user: User){
+
+        //use glide to update the user's image
+        //go through the documentation of glide
+
+        val tvUsername : TextView = binding.navView.findViewById(R.id.tv_username)
+        tvUsername.text = user.name
+
+
+
     }
 }

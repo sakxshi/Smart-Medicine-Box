@@ -13,7 +13,7 @@
     </style>
     
     <style name="AppTheme.NoBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"></style>
-    
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"></style>
     <style name="AppTheme.PopUpOverlay" parent="ThemeOverlay.AppCompat.Light"></style>
 
 
