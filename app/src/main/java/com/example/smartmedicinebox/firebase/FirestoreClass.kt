@@ -35,10 +35,10 @@ class FirestoreClass {
             .document(getCurrentUserID())
             .get()
             .addOnSuccessListener { document ->
-
                 val loggedInUser = document.toObject(User :: class.java)
-                if(loggedInUser != null)
+                if(loggedInUser != null) {
                     activity.signInSuccess(loggedInUser)
+                }
             }
 
 

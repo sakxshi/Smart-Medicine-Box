@@ -12,6 +12,7 @@ android {
     compileSdk 34
 
     defaultConfig {
+
         applicationId "com.example.smartmedicinebox"
         minSdk 19
         targetSdk 33

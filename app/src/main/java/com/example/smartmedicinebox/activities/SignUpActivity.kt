@@ -105,6 +105,6 @@ class SignUpActivity : BaseActivity() {
         Toast.makeText(this, "you have successfully registered", Toast.LENGTH_LONG).show()
         hideProgressDialog()
         //FirebaseAuth.getInstance().signOut()
-        finish()
+        finish()         //back to the intro activity
     }
 }
