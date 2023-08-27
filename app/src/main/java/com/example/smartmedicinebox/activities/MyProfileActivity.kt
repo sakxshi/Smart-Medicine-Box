@@ -1,13 +1,15 @@
 package com.example.smartmedicinebox.activities
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.example.smartmedicinebox.R
 import com.example.smartmedicinebox.databinding.ActivityMyProfileBinding
 import com.example.smartmedicinebox.firebase.FirestoreClass
 import com.example.smartmedicinebox.models.User
+import com.example.smartmedicinebox.utils.Constants
 
-class MyProfileActivity : AppCompatActivity() {
+class MyProfileActivity : BaseActivity() {
+
+    private lateinit var mUserDetails: User
 
     private lateinit var binding: ActivityMyProfileBinding
 
@@ -22,7 +24,14 @@ class MyProfileActivity : AppCompatActivity() {
         setUpActionBar()
 
         FirestoreClass().loadUserData(this)
+
+        binding.update.setOnClickListener{
+
+            showProgressDialog(resources.getString(R.string.please_wait))
+            updateUserProfileData()
+        }
     }
+
 
 
     private fun setUpActionBar(){
@@ -45,8 +54,32 @@ class MyProfileActivity : AppCompatActivity() {
     //loading the user details in MyProfileActivity
     fun setUserDataInUI(user: User){
 
+        mUserDetails = user
+
         binding.etName.setText(user.name)
         binding.etEmail.setText(user.email)
+    }
+
+
+    fun profileUpdateSuccess(){
+        hideProgressDialog()
+    }
+
+    fun updateUserProfileData(){
+
+        val userHashMap = HashMap<String, Any>()
+
+        var anyChangesMade = false
+
+        if(binding.etName.text.toString() !=  mUserDetails.name){
+            userHashMap[Constants.NAME] = binding.etName.text.toString()
+            anyChangesMade = true
+
+        }
+
+        if(anyChangesMade){
+            FirestoreClass().updateUserProfileData(this, userHashMap)
+        }
 
 
 

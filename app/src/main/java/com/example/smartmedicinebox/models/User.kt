@@ -9,7 +9,6 @@ data class User (
     val name: String = "",
     val email: String = "",
     val medicineName: String = "",
-    val medicineTime: String = "",
     val fcmToken: String = ""
 ) : Parcelable {
     constructor(source: Parcel) : this(
@@ -27,7 +26,6 @@ data class User (
         writeString(name)
         writeString(email)
         writeString(medicineName)
-        writeString(medicineTime)
         writeString(fcmToken)
     }
 

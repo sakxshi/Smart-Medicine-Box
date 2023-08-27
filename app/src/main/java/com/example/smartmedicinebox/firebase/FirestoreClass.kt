@@ -1,6 +1,7 @@
 package com.example.smartmedicinebox.firebase
 
 import android.app.Activity
+import android.widget.Toast
 import com.example.smartmedicinebox.activities.MainActivity
 import com.example.smartmedicinebox.activities.MyProfileActivity
 import com.example.smartmedicinebox.activities.SignInActivity
@@ -29,6 +30,20 @@ class FirestoreClass {
 
             activity.userRegisteredSuccess()
         }
+
+    }
+
+    fun updateUserProfileData(activity: MyProfileActivity, userHashMap: HashMap<String, Any>){          //In hava what we call object, Kotlin we call it Any
+
+        mFirestore.collection(Constants.USERS)
+            .document(getCurrentUserID())
+            .update(userHashMap)
+            .addOnSuccessListener {
+                Toast.makeText(activity, "Profile Updated Successfully", Toast.LENGTH_LONG).show()
+                activity.profileUpdateSuccess()
+            }.addOnFailureListener{
+                Toast.makeText(activity, "Profile updation faield", Toast.LENGTH_LONG).show()
+            }
 
     }
 
