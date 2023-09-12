@@ -27,4 +27,9 @@
     <string name="update">UPDATE</string>
     <string name="my_profile_title">My Profile</string>
 
+    <!-- main activity-->
+    <string name="create_board_title">Create Board</string>
+    <string name="create">CREATE</string>
+    <string name="medicine_name">Medicine Name</string>
+
 </resources>

@@ -1,5 +1,6 @@
 package com.example.smartmedicinebox.activities
 
+import android.app.Activity
 import android.os.Bundle
 import com.example.smartmedicinebox.R
 import com.example.smartmedicinebox.databinding.ActivityMyProfileBinding
@@ -63,6 +64,8 @@ class MyProfileActivity : BaseActivity() {
 
     fun profileUpdateSuccess(){
         hideProgressDialog()
+
+        setResult(Activity.RESULT_OK)
     }
 
     fun updateUserProfileData(){
@@ -80,8 +83,5 @@ class MyProfileActivity : BaseActivity() {
         if(anyChangesMade){
             FirestoreClass().updateUserProfileData(this, userHashMap)
         }
-
-
-
     }
 }

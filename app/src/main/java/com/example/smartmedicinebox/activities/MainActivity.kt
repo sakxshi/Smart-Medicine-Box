@@ -1,20 +1,29 @@
 package com.example.smartmedicinebox.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.GravityCompat
 import com.example.smartmedicinebox.R
 import com.example.smartmedicinebox.databinding.ActivityMainBinding
 import com.example.smartmedicinebox.firebase.FirestoreClass
 import com.example.smartmedicinebox.models.User
+import com.example.smartmedicinebox.utils.Constants
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: ActivityMainBinding
+
+    private lateinit var mUserName: String
+
+    companion object{
+        const val MY_PROFILE_REQUEST_CODE : Int = 11
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +38,12 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         binding.navView.setNavigationItemSelectedListener(this)
 
         FirestoreClass().loadUserData(this)
+
+        binding.appBarMainLayout.fabCreateBoard.setOnClickListener{
+            val intent = Intent(this, CreateBoardActivity::class.java)
+            intent.putExtra(Constants.NAME, mUserName)
+            startActivity(intent)
+        }
 
     }
 
@@ -62,11 +77,21 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
            }
        }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == MY_PROFILE_REQUEST_CODE){
+            FirestoreClass().loadUserData(this)           //loading the whole page so that the changes in my profile is visible everywhere
+        }
+        else{
+            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.nav_my_profile  -> {              //accessing my profile present in activity_main_drawer
 
-                startActivity(Intent(this, MyProfileActivity::class.java))     //moving from drawer layout to MyProfileActivity
+                startActivityForResult(Intent(this, MyProfileActivity::class.java), MY_PROFILE_REQUEST_CODE)     //moving from drawer layout to MyProfileActivity
             }
             R.id.nav_sign_out -> {
                 FirebaseAuth.getInstance().signOut()
@@ -86,6 +111,8 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         //use glide to update the user's image
         //go through the documentation of glide
+
+        mUserName = user.name
 
         val tvUsername : TextView = binding.navView.findViewById(R.id.tv_username)
         tvUsername.text = user.name

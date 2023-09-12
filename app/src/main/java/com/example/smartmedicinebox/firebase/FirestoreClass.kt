@@ -2,10 +2,12 @@ package com.example.smartmedicinebox.firebase
 
 import android.app.Activity
 import android.widget.Toast
+import com.example.smartmedicinebox.activities.CreateBoardActivity
 import com.example.smartmedicinebox.activities.MainActivity
 import com.example.smartmedicinebox.activities.MyProfileActivity
 import com.example.smartmedicinebox.activities.SignInActivity
 import com.example.smartmedicinebox.activities.SignUpActivity
+import com.example.smartmedicinebox.models.Board
 import com.example.smartmedicinebox.models.User
 import com.example.smartmedicinebox.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
@@ -70,8 +72,6 @@ class FirestoreClass {
                     }
                 }
             }
-
-
     }
 
     fun getCurrentUserID() : String {
@@ -82,6 +82,19 @@ class FirestoreClass {
             currentUserID = currentUser.uid
         }
         return currentUserID
+    }
+
+    fun createBoard(activity: CreateBoardActivity, board: Board){
+        mFirestore.collection(Constants.BOARDS)
+            .document()
+            .set(board, SetOptions.merge())
+            .addOnSuccessListener {
+                Toast.makeText(activity, "Board created successfully", Toast.LENGTH_LONG).show()
+                activity.boardCreatedSuccessfully()
+            }
+            .addOnFailureListener{
+                Toast.makeText(activity, "Board could not be created", Toast.LENGTH_LONG).show()
+            }
     }
 
 }

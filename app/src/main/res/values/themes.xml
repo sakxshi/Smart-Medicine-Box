@@ -16,5 +16,10 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"></style>
     <style name="AppTheme.PopUpOverlay" parent="ThemeOverlay.AppCompat.Light"></style>
 
+    <style name="MyAlarmStyle" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorPrimaryDark">@color/ColorPrimaryDark</item>
+
+    </style>
+
 
 </resources>
