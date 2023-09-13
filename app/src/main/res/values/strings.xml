@@ -32,4 +32,7 @@
     <string name="create">CREATE</string>
     <string name="medicine_name">Medicine Name</string>
 
+    <!-- main content -->
+    <string name="no_boards_are_available">No Boards are Available!</string>
+
 </resources>

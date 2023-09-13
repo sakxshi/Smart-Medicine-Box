@@ -6,19 +6,22 @@ import android.os.Parcelable
 data class Board(
     val medsName: String = "",
     val createdBy: String = "",
-    val assignedTo: String = ""
+    val assignedTo: String = "",
+    var documentID: String = ""
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
+        parcel.readString()!!,
         parcel.readString()!!
-    ) {
-    }
+    )
+
 
     override fun writeToParcel(parcel: Parcel, flags: Int) = with(parcel){
         parcel.writeString(medsName)
         parcel.writeString(createdBy)
         parcel.writeString(assignedTo)
+        parcel.writeString(documentID)
     }
 
     override fun describeContents(): Int {

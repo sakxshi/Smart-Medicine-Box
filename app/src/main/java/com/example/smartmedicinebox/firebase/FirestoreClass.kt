@@ -1,6 +1,7 @@
 package com.example.smartmedicinebox.firebase
 
 import android.app.Activity
+import android.util.Log
 import android.widget.Toast
 import com.example.smartmedicinebox.activities.CreateBoardActivity
 import com.example.smartmedicinebox.activities.MainActivity
@@ -35,6 +36,29 @@ class FirestoreClass {
 
     }
 
+    fun getBoardsList(activity: MainActivity){
+        mFirestore.collection(Constants.BOARDS)
+            .whereArrayContains(Constants.ASSIGNED_TO, getCurrentUserID())     //only the boards that are assigned to the current user will be displayed
+            .get()
+            .addOnSuccessListener {
+                document ->
+                Log.i(activity.javaClass.simpleName, document.documents.toString())
+                val boardList: ArrayList<Board> = ArrayList()
+
+                for(i in document.documents){
+                    val board = i.toObject(Board::class.java)!!
+                    board.documentID = i.id
+                    boardList.add(board)
+                }
+
+                activity.populateBoardsListToUI(boardList)
+            }.addOnFailureListener{
+                e ->
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error while creating a board", e)
+            }
+    }
+
     fun updateUserProfileData(activity: MyProfileActivity, userHashMap: HashMap<String, Any>){          //In hava what we call object, Kotlin we call it Any
 
         mFirestore.collection(Constants.USERS)
@@ -44,12 +68,12 @@ class FirestoreClass {
                 Toast.makeText(activity, "Profile Updated Successfully", Toast.LENGTH_LONG).show()
                 activity.profileUpdateSuccess()
             }.addOnFailureListener{
-                Toast.makeText(activity, "Profile updation faield", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "Profile update failed", Toast.LENGTH_LONG).show()
             }
 
     }
 
-    fun loadUserData(activity: Activity){
+    fun loadUserData(activity: Activity, readBoardsList: Boolean = false){
 
         mFirestore.collection(Constants.USERS)
             .document(getCurrentUserID())
@@ -63,7 +87,7 @@ class FirestoreClass {
                             activity.signInSuccess(loggedInUser)                //if the activity passed is SignInActivity, sign in the user
                         }
                         is MainActivity ->{
-                            activity.updateNavigationUserDetails(loggedInUser)  //if the activity passed is the MainActivity, update the user's details
+                            activity.updateNavigationUserDetails(loggedInUser, readBoardsList)  //if the activity passed is the MainActivity, update the user's details
                         }
                         is MyProfileActivity ->{
                             activity.setUserDataInUI(loggedInUser)              //if the activity passed is MyProileActivity, load the user's details

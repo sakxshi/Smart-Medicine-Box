@@ -4,12 +4,17 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.smartmedicinebox.R
+import com.example.smartmedicinebox.adapters.BoardItemsAdapter
 import com.example.smartmedicinebox.databinding.ActivityMainBinding
 import com.example.smartmedicinebox.firebase.FirestoreClass
+import com.example.smartmedicinebox.models.Board
 import com.example.smartmedicinebox.models.User
 import com.example.smartmedicinebox.utils.Constants
 import com.google.android.material.navigation.NavigationView
@@ -37,12 +42,36 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         binding.navView.setNavigationItemSelectedListener(this)
 
-        FirestoreClass().loadUserData(this)
+        FirestoreClass().loadUserData(this, true)
 
         binding.appBarMainLayout.fabCreateBoard.setOnClickListener{
             val intent = Intent(this, CreateBoardActivity::class.java)
             intent.putExtra(Constants.NAME, mUserName)
             startActivity(intent)
+        }
+
+    }
+
+    fun populateBoardsListToUI(boardsList: ArrayList<Board>){
+
+        hideProgressDialog()
+
+        val rvBoardsList: RecyclerView = binding.appBarMainLayout.mainContent.rvBoardsList
+        val tvNoBoardsAvailable: TextView = binding.appBarMainLayout.mainContent.tvNoBoardsAvailable
+
+        if (boardsList.size > 0){
+            rvBoardsList.visibility = View.VISIBLE
+            tvNoBoardsAvailable.visibility =  View.GONE
+
+            rvBoardsList.layoutManager = LinearLayoutManager(this)
+            rvBoardsList.setHasFixedSize(true)
+
+            val adapter = BoardItemsAdapter(this, boardsList)
+            rvBoardsList.adapter = adapter
+        }
+        else{                       //if the boards list is empty
+            rvBoardsList.visibility = View.GONE
+            tvNoBoardsAvailable.visibility = View.VISIBLE
         }
 
     }
@@ -107,7 +136,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         return true       //just because the function expects a boolean return type value
     }
     //this function is to update the user details
-    fun updateNavigationUserDetails(user: User){
+    fun updateNavigationUserDetails(user: User, readBoardsList: Boolean){
 
         //use glide to update the user's image
         //go through the documentation of glide
@@ -117,7 +146,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val tvUsername : TextView = binding.navView.findViewById(R.id.tv_username)
         tvUsername.text = user.name
 
-
+        if(readBoardsList){
+            showProgressDialog(resources.getString(R.string.please_wait))
+            FirestoreClass().getBoardsList(this)
+        }
 
     }
 }
