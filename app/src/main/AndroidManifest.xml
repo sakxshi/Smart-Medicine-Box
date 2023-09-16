@@ -16,6 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartMedicineBox">
         <activity
+            android:name=".activities.DetailsToDisplayActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".activities.TaskListActivity"
             android:exported="false" />
         <activity

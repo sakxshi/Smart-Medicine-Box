@@ -7,12 +7,18 @@ data class Board(
     val medsName: String = "",
     val createdBy: String = "",
     val assignedTo: ArrayList<String> = ArrayList(),
-    var documentID: String = ""
+    var documentID: String = "",
+    val prescribedFor: String = "",
+    val prescribedBy: String = "",
+    val time: String = ""
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.createStringArrayList()!!,
+        parcel.readString()!!,
+        parcel.readString()!!,
+        parcel.readString()!!,
         parcel.readString()!!
     )
 
@@ -22,6 +28,9 @@ data class Board(
         parcel.writeString(createdBy)
         parcel.writeStringList(assignedTo)
         parcel.writeString(documentID)
+        parcel.writeString(prescribedFor)
+        parcel.writeString(prescribedBy)
+        parcel.writeString(time)
     }
 
     override fun describeContents(): Int {

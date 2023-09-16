@@ -21,7 +21,7 @@
                 android:id="@+id/tv_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/ColorPrimaryDark"
+                android:textColor="#000000"
                 android:textSize="@dimen/item_board_name_text_size"
                 tools:text="Board Name" />
 
@@ -29,7 +29,7 @@
                 android:id="@+id/tv_created_by"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/ColorPrimaryDark"
+                android:textColor="@color/grey"
                 android:textSize="@dimen/item_board_created_by_text_size"
                 tools:text="Created By" />
     </LinearLayout>

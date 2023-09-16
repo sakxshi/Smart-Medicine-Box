@@ -56,7 +56,6 @@ class MyProfileActivity : BaseActivity() {
     fun setUserDataInUI(user: User){
 
         mUserDetails = user
-
         binding.etName.setText(user.name)
         binding.etEmail.setText(user.email)
     }

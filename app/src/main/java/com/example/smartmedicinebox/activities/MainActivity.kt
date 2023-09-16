@@ -78,12 +78,14 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             adapter.setOnClickListener(object :
                 BoardItemsAdapter.OnClickListener {
                 override fun onClick(position: Int, model: Board) {
-                    startActivity(Intent(this@MainActivity, TaskListActivity::class.java))
+                    val intent = Intent(this@MainActivity, DetailsToDisplayActivity::class.java)
+                    intent.putExtra(Constants.DOCUMENT_ID, model.documentID)
+                    startActivity(intent)
                 }
             })
 
         }
-        else{                       //if the boards list is empty
+        else{               //if the boards list is empty
 
             Log.e("if or else", "we have entered the else block")
             rvBoardsList.visibility = View.GONE

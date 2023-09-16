@@ -35,4 +35,10 @@
     <!-- main content -->
     <string name="no_boards_are_available">No Boards are Available!</string>
 
+    <!-- details to display -->
+    <string name="prescribed_for">Prescribed For</string>
+    <string name="prescribed_by">Prescribed By</string>
+    <string name="time">Time</string>
+    <string name="okay">Okay</string>
+
 </resources>

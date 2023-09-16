@@ -112,6 +112,7 @@ class SignInActivity : BaseActivity() {
         finish()        //so that the user cannot get back to the SignInActivity
     }
 
+    //firebase me docs nai dikh rhe
     fun checkIfCollectionExists(collectionName: String) {
         val collectionRef = mFirestore.collection(collectionName)
 

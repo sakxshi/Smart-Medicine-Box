@@ -11,4 +11,5 @@
     <color name="snackbar_error_color">#da5552</color>
     
     <color name="divider_color">#EAEAEA</color>
+    <color name="grey">#343a40</color>
 </resources>

@@ -28,6 +28,7 @@
     <dimen name="authentication_screen_card_view_marginTop">60dp</dimen>
     <dimen name="card_view_elevation">15dp</dimen>
     <dimen name="card_view_corner_radius">10dp</dimen>
+    <dimen name="card_view_layout_content_margin">25dp</dimen>
     <dimen name="card_view_layout_content_padding">16dp</dimen>
     <dimen name="authentication_screen_til_marginStartEnd">16dp</dimen>
     <dimen name="et_text_size">16sp</dimen>
@@ -62,6 +63,7 @@
     <!-- main activity -->
     <dimen name="fab_margin">20dp</dimen>
     <dimen name="create_board_content_padding">16dp</dimen>
+    <dimen name="create_board_content_margin">30dp</dimen>
     <dimen name="create_board_til_marginTop">25dp</dimen>
     <dimen name="create_board_btn_marginTop">30dp</dimen>
 
@@ -77,6 +79,12 @@
     <dimen name="item_board_created_by_text_size">14sp</dimen>
     <dimen name="item_board_divider_marginTop">5dp</dimen>
     <dimen name="item_board_divider_height">0.3dp</dimen>
+    
+    <!-- details to display -->
+    <dimen name="dtd_marginTop">50dp</dimen>
+    <dimen name="dtd_text_size">22sp</dimen>
+    <dimen name="dtd_ll_marginTop">25dp</dimen>
+    <dimen name="dtd_tv_margin">20dp</dimen>
 
 
 

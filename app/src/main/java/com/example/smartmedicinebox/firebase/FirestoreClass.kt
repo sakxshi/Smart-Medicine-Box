@@ -4,6 +4,7 @@ import android.app.Activity
 import android.util.Log
 import android.widget.Toast
 import com.example.smartmedicinebox.activities.CreateBoardActivity
+import com.example.smartmedicinebox.activities.DetailsToDisplayActivity
 import com.example.smartmedicinebox.activities.MainActivity
 import com.example.smartmedicinebox.activities.MyProfileActivity
 import com.example.smartmedicinebox.activities.SignInActivity
@@ -25,7 +26,7 @@ class FirestoreClass {
 
     fun registerUser(activity: SignUpActivity, userInfo: User){
 
-        //we'll store the details of every user in a document
+        //we're storing the details of every user in a document
         mFirestore.collection(Constants.USERS)
             .document(getCurrentUserID())
             .set(userInfo, SetOptions.merge())
@@ -38,16 +39,16 @@ class FirestoreClass {
 
     fun getBoardsList(activity: MainActivity){
         mFirestore.collection(Constants.BOARDS)
-            // A where array query as we want the list of the board in which the user is assigned. So here you can pass the current user id.
+            //show the documents only if they are assigned to the signed in user
             .whereArrayContains(Constants.ASSIGNED_TO, getCurrentUserID())
-            .get() // Will get the documents snapshots.
+            .get()
             .addOnSuccessListener { document ->
                 // Here we get the list of boards in the form of documents.
                 Log.e(activity.javaClass.simpleName, document.documents.toString())
-                // Here we have created a new instance for Boards ArrayList.
+               //boardsList will contain all the boards that we have created
                 val boardsList: ArrayList<Board> = ArrayList()
 
-                // A for loop as per the list of documents to convert them into Boards ArrayList.
+                // A for loop to convert into Boards ArrayList.
                 for (i in document.documents) {
 
                     val board = i.toObject(Board::class.java)!!
@@ -56,7 +57,6 @@ class FirestoreClass {
                     boardsList.add(board)
                 }
 
-                // Here pass the result to the base activity.
                 activity.populateBoardsListToUI(boardsList)
             }
             .addOnFailureListener { e ->
@@ -66,7 +66,7 @@ class FirestoreClass {
             }
     }
 
-    fun updateUserProfileData(activity: MyProfileActivity, userHashMap: HashMap<String, Any>){          //In hava what we call object, Kotlin we call it Any
+    fun updateUserProfileData(activity: MyProfileActivity, userHashMap: HashMap<String, Any>){          //In java what we call object, Kotlin we call it Any
 
         mFirestore.collection(Constants.USERS)
             .document(getCurrentUserID())
@@ -98,7 +98,6 @@ class FirestoreClass {
                         }
                         is MyProfileActivity ->{
                             activity.setUserDataInUI(loggedInUser)              //if the activity passed is MyProfileActivity, load the user's details
-
                         }
                     }
                 }
@@ -126,6 +125,28 @@ class FirestoreClass {
             .addOnFailureListener{
                 Toast.makeText(activity, "Board could not be created", Toast.LENGTH_LONG).show()
             }
+    }
+
+    fun getBoardDetails(activity: DetailsToDisplayActivity, documentID: String){
+
+        mFirestore.collection(Constants.BOARDS)
+            .document(documentID)
+            .get()
+            .addOnSuccessListener { document ->
+                // Here we get the list of boards in the form of documents.
+                Log.e(activity.javaClass.simpleName, document.toString())
+                //boardsList will contain all the boards that we have created
+
+                activity.boardDetails(document.toObject(Board::class.java)!!)
+                activity.setDetailsInUI(document.toObject(Board::class.java)!!)
+            }
+            .addOnFailureListener { e ->
+
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error while creating a board.", e)
+            }
+
+
     }
 
 }

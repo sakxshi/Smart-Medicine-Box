@@ -62,7 +62,14 @@ class CreateBoardActivity : BaseActivity() {
         val assignedUsersArrayList: ArrayList<String> = ArrayList()
         assignedUsersArrayList.add(getCurrentUserID())
 
-        var board = Board(binding.etBoardName.text.toString(), mUserName, assignedUsersArrayList )    //we have prepared the board
+        //preparing the board
+        var board = Board(binding.etBoardName.text.toString(),
+            mUserName,
+            assignedUsersArrayList,
+            "",
+            binding.etPrescribedFor.text.toString(),
+            binding.etPrescribedBy.text.toString(),
+            binding.etTime.text.toString())
         FirestoreClass().createBoard(this, board)               //the board will now be visible in the Firebase
     }
 
@@ -73,6 +80,7 @@ class CreateBoardActivity : BaseActivity() {
 
         finish()
     }
+
 
     private fun setUpActionBar(){
 
@@ -123,8 +131,7 @@ class CreateBoardActivity : BaseActivity() {
                 }
             }
             Log.e("system hour",currentTime.hour.toString())
-
-                Log.e("system minute", currentTime.minute.toString())
+            Log.e("system minute", currentTime.minute.toString())
 
             Log.e("alarm hour", timePicker.hour.toString())
             Log.e("alarm minute", timePicker.minute.toString())
