@@ -38,24 +38,31 @@ class FirestoreClass {
 
     fun getBoardsList(activity: MainActivity){
         mFirestore.collection(Constants.BOARDS)
-            .whereArrayContains(Constants.ASSIGNED_TO, getCurrentUserID())     //only the boards that are assigned to the current user will be displayed
-            .get()
-            .addOnSuccessListener {
-                document ->
-                Log.i(activity.javaClass.simpleName, document.documents.toString())
-                val boardList: ArrayList<Board> = ArrayList()
+            // A where array query as we want the list of the board in which the user is assigned. So here you can pass the current user id.
+            .whereArrayContains(Constants.ASSIGNED_TO, getCurrentUserID())
+            .get() // Will get the documents snapshots.
+            .addOnSuccessListener { document ->
+                // Here we get the list of boards in the form of documents.
+                Log.e(activity.javaClass.simpleName, document.documents.toString())
+                // Here we have created a new instance for Boards ArrayList.
+                val boardsList: ArrayList<Board> = ArrayList()
 
-                for(i in document.documents){
+                // A for loop as per the list of documents to convert them into Boards ArrayList.
+                for (i in document.documents) {
+
                     val board = i.toObject(Board::class.java)!!
                     board.documentID = i.id
-                    boardList.add(board)
+
+                    boardsList.add(board)
                 }
 
-                activity.populateBoardsListToUI(boardList)
-            }.addOnFailureListener{
-                e ->
+                // Here pass the result to the base activity.
+                activity.populateBoardsListToUI(boardsList)
+            }
+            .addOnFailureListener { e ->
+
                 activity.hideProgressDialog()
-                Log.e(activity.javaClass.simpleName, "Error while creating a board", e)
+                Log.e(activity.javaClass.simpleName, "Error while creating a board.", e)
             }
     }
 
@@ -90,7 +97,7 @@ class FirestoreClass {
                             activity.updateNavigationUserDetails(loggedInUser, readBoardsList)  //if the activity passed is the MainActivity, update the user's details
                         }
                         is MyProfileActivity ->{
-                            activity.setUserDataInUI(loggedInUser)              //if the activity passed is MyProileActivity, load the user's details
+                            activity.setUserDataInUI(loggedInUser)              //if the activity passed is MyProfileActivity, load the user's details
 
                         }
                     }

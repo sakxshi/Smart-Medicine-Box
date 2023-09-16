@@ -3,13 +3,13 @@ package com.example.smartmedicinebox.activities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.smartmedicinebox.R
 import com.example.smartmedicinebox.adapters.BoardItemsAdapter
 import com.example.smartmedicinebox.databinding.ActivityMainBinding
@@ -28,6 +28,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     companion object{
         const val MY_PROFILE_REQUEST_CODE : Int = 11
+        const val CREATE_BOARD_REQUEST_CODE: Int = 12
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,22 +45,27 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         FirestoreClass().loadUserData(this, true)
 
-        binding.appBarMainLayout.fabCreateBoard.setOnClickListener{
+        binding.appBarMainLayout.fabCreateBoard.setOnClickListener {
             val intent = Intent(this, CreateBoardActivity::class.java)
             intent.putExtra(Constants.NAME, mUserName)
-            startActivity(intent)
+            startActivityForResult(intent, CREATE_BOARD_REQUEST_CODE)
         }
 
     }
 
     fun populateBoardsListToUI(boardsList: ArrayList<Board>){
 
+        Log.e("entered the function?", "We have entered populateBoardsListToUI function")
+
         hideProgressDialog()
 
-        val rvBoardsList: RecyclerView = binding.appBarMainLayout.mainContent.rvBoardsList
-        val tvNoBoardsAvailable: TextView = binding.appBarMainLayout.mainContent.tvNoBoardsAvailable
+        val rvBoardsList = binding.appBarMainLayout.mainContent.rvBoardsList
+        val tvNoBoardsAvailable = binding.appBarMainLayout.mainContent.tvNoBoardsAvailable
 
         if (boardsList.size > 0){
+
+            Log.e("tag", "Board list size is greater than zero")
+
             rvBoardsList.visibility = View.VISIBLE
             tvNoBoardsAvailable.visibility =  View.GONE
 
@@ -68,8 +74,18 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
             val adapter = BoardItemsAdapter(this, boardsList)
             rvBoardsList.adapter = adapter
+
+            adapter.setOnClickListener(object :
+                BoardItemsAdapter.OnClickListener {
+                override fun onClick(position: Int, model: Board) {
+                    startActivity(Intent(this@MainActivity, TaskListActivity::class.java))
+                }
+            })
+
         }
         else{                       //if the boards list is empty
+
+            Log.e("if or else", "we have entered the else block")
             rvBoardsList.visibility = View.GONE
             tvNoBoardsAvailable.visibility = View.VISIBLE
         }
@@ -110,6 +126,9 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == MY_PROFILE_REQUEST_CODE){
             FirestoreClass().loadUserData(this)           //loading the whole page so that the changes in my profile is visible everywhere
+        }
+        else if(resultCode == Activity.RESULT_OK && requestCode == CREATE_BOARD_REQUEST_CODE){
+            FirestoreClass().getBoardsList(this)
         }
         else{
             Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()

@@ -9,13 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.smartmedicinebox.R
 import com.example.smartmedicinebox.models.Board
 
-open class BoardItemsAdapter(private val context: Context, private var list: ArrayList<Board>): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+open class BoardItemsAdapter(private val context: Context,
+                             private var list: ArrayList<Board>): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     private var onClickListener: OnClickListener?= null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-       return MyViewHolder(LayoutInflater.from(context).inflate(R.layout.item_board, parent, false))
+       return MyViewHolder(LayoutInflater.from(context)
+           .inflate(R.layout.item_board, parent, false))
     }
 
     override fun getItemCount(): Int {
@@ -39,7 +41,11 @@ open class BoardItemsAdapter(private val context: Context, private var list: Arr
         }
     }
 
-    interface OnClickListener{
+    fun setOnClickListener(onClickListener: OnClickListener) {
+        this.onClickListener = onClickListener
+    }
+
+    interface OnClickListener {
         fun onClick(position: Int, model: Board)
     }
 

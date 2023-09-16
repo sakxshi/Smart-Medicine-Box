@@ -6,13 +6,13 @@ import android.os.Parcelable
 data class Board(
     val medsName: String = "",
     val createdBy: String = "",
-    val assignedTo: String = "",
+    val assignedTo: ArrayList<String> = ArrayList(),
     var documentID: String = ""
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
-        parcel.readString()!!,
+        parcel.createStringArrayList()!!,
         parcel.readString()!!
     )
 
@@ -20,7 +20,7 @@ data class Board(
     override fun writeToParcel(parcel: Parcel, flags: Int) = with(parcel){
         parcel.writeString(medsName)
         parcel.writeString(createdBy)
-        parcel.writeString(assignedTo)
+        parcel.writeStringList(assignedTo)
         parcel.writeString(documentID)
     }
 

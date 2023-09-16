@@ -1,5 +1,6 @@
 package com.example.smartmedicinebox.activities
 
+import android.app.Activity
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Intent
@@ -57,14 +58,19 @@ class CreateBoardActivity : BaseActivity() {
     }
 
     private fun createBoard(){
-        val assignedUser : String = getCurrentUserID()
 
-        var board = Board(binding.etBoardName.text.toString(), mUserName, assignedUser )    //we have prepared the board
+        val assignedUsersArrayList: ArrayList<String> = ArrayList()
+        assignedUsersArrayList.add(getCurrentUserID())
+
+        var board = Board(binding.etBoardName.text.toString(), mUserName, assignedUsersArrayList )    //we have prepared the board
         FirestoreClass().createBoard(this, board)               //the board will now be visible in the Firebase
     }
 
     fun boardCreatedSuccessfully(){
         hideProgressDialog()
+
+        setResult(Activity.RESULT_OK)
+
         finish()
     }
 
@@ -85,6 +91,8 @@ class CreateBoardActivity : BaseActivity() {
 
     }
 
+
+    //Alarm shit starts from here
     @RequiresApi(Build.VERSION_CODES.N)
     fun onToggleClicked(view: View){
 
