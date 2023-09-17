@@ -89,18 +89,6 @@
                             android:textSize="@dimen/dtd_text_size"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dtd_ll_marginTop">
-
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/et_time"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/time"
-                            android:textSize="@dimen/dtd_text_size"/>
-                    </com.google.android.material.textfield.TextInputLayout>
 
                 </com.google.android.material.textfield.TextInputLayout>
 

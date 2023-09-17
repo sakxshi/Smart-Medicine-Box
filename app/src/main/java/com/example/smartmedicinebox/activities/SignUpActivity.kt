@@ -59,16 +59,16 @@ class SignUpActivity : BaseActivity() {
             showProgressDialog(resources.getString(R.string.please_wait))
 
             //using Firebase to register the user
-            //createUserWithEmailAndPassword is a function of Firebase which we are accessing through its instance/object
+            //createUserWithEmailAndPassword is a function of Firebase
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(OnCompleteListener<AuthResult> { task ->
                     hideProgressDialog()
                     if (task.isSuccessful) {
                         val firebaseUser: FirebaseUser = task.result!!.user!!         //getting the name from Firebase
-                        val registeredEmail = firebaseUser.email!!                    //getting the email address from Firebase
-                        val user = User(firebaseUser.uid, name, registeredEmail)
+                        val registeredEmail = firebaseUser.email!!              //getting the email address from Firebase
+                        val user = User(firebaseUser.uid, name, registeredEmail)      //filling all the details in our User model
 
-                        FirestoreClass().registerUser(this, user)              //calling the registerUser function from Firestore class
+                        FirestoreClass().registerUser(this, user)
                     }
                     else {
                         Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show()

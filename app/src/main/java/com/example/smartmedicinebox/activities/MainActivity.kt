@@ -3,7 +3,6 @@ package com.example.smartmedicinebox.activities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
@@ -55,16 +54,17 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     fun populateBoardsListToUI(boardsList: ArrayList<Board>){
 
-        Log.e("entered the function?", "We have entered populateBoardsListToUI function")
+        //Log.e("entered the function?", "We have entered populateBoardsListToUI function")
 
         hideProgressDialog()
 
         val rvBoardsList = binding.appBarMainLayout.mainContent.rvBoardsList
         val tvNoBoardsAvailable = binding.appBarMainLayout.mainContent.tvNoBoardsAvailable
 
+        //If we have anything in the boardsList Array, that is, if we have created any board, this block will be executed
         if (boardsList.size > 0){
 
-            Log.e("tag", "Board list size is greater than zero")
+            //Log.e("tag", "Board list size is greater than zero")
 
             rvBoardsList.visibility = View.VISIBLE
             tvNoBoardsAvailable.visibility =  View.GONE
@@ -85,9 +85,10 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             })
 
         }
-        else{               //if the boards list is empty
+        //if the boardsList is empty, that is no board has been created
+        else{
 
-            Log.e("if or else", "we have entered the else block")
+           // Log.e("if or else", "we have entered the else block")
             rvBoardsList.visibility = View.GONE
             tvNoBoardsAvailable.visibility = View.VISIBLE
         }
@@ -136,10 +137,11 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
         }
     }
-
+    //function to take care of My Profile and Sign Out Feature
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        //when in kotlin is like switch case in java
         when(item.itemId){
-            R.id.nav_my_profile  -> {              //accessing my profile present in activity_main_drawer
+            R.id.nav_my_profile  -> {
 
                 startActivityForResult(Intent(this, MyProfileActivity::class.java), MY_PROFILE_REQUEST_CODE)     //moving from drawer layout to MyProfileActivity
             }

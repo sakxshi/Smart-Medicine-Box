@@ -23,7 +23,7 @@ class SignInActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //for accessing the xml files
+
         binding = ActivitySignInBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
@@ -64,6 +64,7 @@ class SignInActivity : BaseActivity() {
         val email: String = binding.etEmail.text.toString().trim { it <= ' ' }
         val password: String = binding.etPassword.text.toString().trim { it <= ' ' }
 
+        //first check if the email and password are entered or not
         if (validateForm(email, password)) {
             showProgressDialog(resources.getString(R.string.please_wait))
 
@@ -135,7 +136,4 @@ class SignInActivity : BaseActivity() {
                 }
             }
     }
-
-
-
 }

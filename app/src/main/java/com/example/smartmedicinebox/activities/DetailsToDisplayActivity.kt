@@ -1,7 +1,9 @@
 package com.example.smartmedicinebox.activities
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import com.example.smartmedicinebox.R
 import com.example.smartmedicinebox.databinding.ActivityDetailsToDisplayBinding
 import com.example.smartmedicinebox.firebase.FirestoreClass
@@ -12,6 +14,7 @@ class DetailsToDisplayActivity : BaseActivity() {
 
     private lateinit var binding: ActivityDetailsToDisplayBinding
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -25,8 +28,6 @@ class DetailsToDisplayActivity : BaseActivity() {
         }
 
         showProgressDialog(resources.getString(R.string.please_wait))
-
-        FirestoreClass().loadUserData(this)
 
         FirestoreClass().getBoardDetails(this, boardDocumentID)
 
@@ -53,6 +54,8 @@ class DetailsToDisplayActivity : BaseActivity() {
         toolbarDetailsToDisplayActivity.setNavigationOnClickListener{onBackPressed()}
     }
 
+
+    @RequiresApi(Build.VERSION_CODES.M)
     fun setDetailsInUI(board: Board) {
 
 

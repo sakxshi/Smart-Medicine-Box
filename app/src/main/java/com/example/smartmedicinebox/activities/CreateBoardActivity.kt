@@ -9,7 +9,6 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.TimePicker
 import android.widget.Toast
 import android.widget.ToggleButton
@@ -28,12 +27,12 @@ class CreateBoardActivity : BaseActivity() {
 
     private lateinit var mUserName: String
 
-    lateinit var btnSetAlarm: Button
     lateinit var timePicker: TimePicker
     lateinit var pendingIntent: PendingIntent
     var time: Long? = null
     var alarmManager: AlarmManager? = null
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateBoardBinding.inflate(layoutInflater)
@@ -57,31 +56,6 @@ class CreateBoardActivity : BaseActivity() {
 
     }
 
-    private fun createBoard(){
-
-        val assignedUsersArrayList: ArrayList<String> = ArrayList()
-        assignedUsersArrayList.add(getCurrentUserID())
-
-        //preparing the board
-        var board = Board(binding.etBoardName.text.toString(),
-            mUserName,
-            assignedUsersArrayList,
-            "",
-            binding.etPrescribedFor.text.toString(),
-            binding.etPrescribedBy.text.toString(),
-            binding.etTime.text.toString())
-        FirestoreClass().createBoard(this, board)               //the board will now be visible in the Firebase
-    }
-
-    fun boardCreatedSuccessfully(){
-        hideProgressDialog()
-
-        setResult(Activity.RESULT_OK)
-
-        finish()
-    }
-
-
     private fun setUpActionBar(){
 
         val toolbarCreateBoardActivity = binding.toolbarCreateBoardActivity
@@ -99,6 +73,36 @@ class CreateBoardActivity : BaseActivity() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun createBoard(){
+
+        val assignedUsersArrayList: ArrayList<String> = ArrayList()
+        assignedUsersArrayList.add(getCurrentUserID())
+
+        val alarmHour = timePicker.hour.toString()
+        val alarmMin = timePicker.minute.toString()
+
+        val alarmTime = "$alarmHour : $alarmMin"
+
+        //preparing the board
+        var board = Board(
+            binding.etBoardName.text.toString(),
+            mUserName,
+            assignedUsersArrayList,
+            "",
+            binding.etPrescribedFor.text.toString(),
+            binding.etPrescribedBy.text.toString(),
+            alarmTime)
+        FirestoreClass().createBoard(this, board)               //the board will now be visible in the Firebase
+    }
+
+    fun boardCreatedSuccessfully(){
+        hideProgressDialog()
+
+        setResult(Activity.RESULT_OK)
+
+        finish()
+    }
 
     //Alarm shit starts from here
     @RequiresApi(Build.VERSION_CODES.N)
@@ -130,6 +134,8 @@ class CreateBoardActivity : BaseActivity() {
                     time!! + 1000*60*60*24
                 }
             }
+
+
             Log.e("system hour",currentTime.hour.toString())
             Log.e("system minute", currentTime.minute.toString())
 
@@ -139,12 +145,14 @@ class CreateBoardActivity : BaseActivity() {
             val sysHour = currentTime.hour.toString()
             val sysMin = currentTime.minute.toString()
 
-            if (sysHour == timePicker.hour.toString() && sysMin == timePicker.minute.toString()){
+            //alarm bs not working
+            if (sysHour == timePicker.hour.toString() && sysMin == timePicker.minute.toString()) {
 
                 AlarmReceiver().onReceive(this, intent)
-                alarmManager!!.setRepeating(AlarmManager.RTC_WAKEUP, time!!, 1000, pendingIntent)
-
+                        alarmManager !!. setRepeating (AlarmManager.RTC_WAKEUP, time!!, 1000, pendingIntent)
             }
+
+
         }
         else{
             alarmManager!!.cancel(pendingIntent)

@@ -18,6 +18,7 @@ class SplashActivity : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
+        //post delayed is used to run the runnable after a specified amount of delay
         Handler().postDelayed({
 
             var currentUserID = FirestoreClass().getCurrentUserID()

@@ -1,8 +1,10 @@
 package com.example.smartmedicinebox.firebase
 
 import android.app.Activity
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.example.smartmedicinebox.activities.CreateBoardActivity
 import com.example.smartmedicinebox.activities.DetailsToDisplayActivity
 import com.example.smartmedicinebox.activities.MainActivity
@@ -23,7 +25,7 @@ class FirestoreClass {
 
     private val mFirestore = FirebaseFirestore.getInstance()
 
-
+    //to register the user in the database
     fun registerUser(activity: SignUpActivity, userInfo: User){
 
         //we're storing the details of every user in a document
@@ -37,6 +39,8 @@ class FirestoreClass {
 
     }
 
+    //function to create a boardsList ArrayList
+    //as we create new boards, they get added in the ArrayList
     fun getBoardsList(activity: MainActivity){
         mFirestore.collection(Constants.BOARDS)
             //show the documents only if they are assigned to the signed in user
@@ -94,7 +98,7 @@ class FirestoreClass {
                             activity.signInSuccess(loggedInUser)                //if the activity passed is SignInActivity, sign in the user
                         }
                         is MainActivity ->{
-                            activity.updateNavigationUserDetails(loggedInUser, readBoardsList)  //if the activity passed is the MainActivity, update the user's details
+                            activity.updateNavigationUserDetails(loggedInUser, readBoardsList)  //if the activity passed is the MainActivity, update the user's details (in our case only name)
                         }
                         is MyProfileActivity ->{
                             activity.setUserDataInUI(loggedInUser)              //if the activity passed is MyProfileActivity, load the user's details
@@ -127,6 +131,7 @@ class FirestoreClass {
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     fun getBoardDetails(activity: DetailsToDisplayActivity, documentID: String){
 
         mFirestore.collection(Constants.BOARDS)

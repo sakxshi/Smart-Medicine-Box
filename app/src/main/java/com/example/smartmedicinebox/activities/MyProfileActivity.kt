@@ -63,22 +63,23 @@ class MyProfileActivity : BaseActivity() {
 
     fun profileUpdateSuccess(){
         hideProgressDialog()
-
         setResult(Activity.RESULT_OK)
     }
 
     fun updateUserProfileData(){
 
+        //HashMap is like key value pair
         val userHashMap = HashMap<String, Any>()
 
         var anyChangesMade = false
 
         if(binding.etName.text.toString() !=  mUserDetails.name){
+            //NAME updated but not in the database yet
             userHashMap[Constants.NAME] = binding.etName.text.toString()
             anyChangesMade = true
 
         }
-
+        //if changes are made, we have to update it in the database as well
         if(anyChangesMade){
             FirestoreClass().updateUserProfileData(this, userHashMap)
         }

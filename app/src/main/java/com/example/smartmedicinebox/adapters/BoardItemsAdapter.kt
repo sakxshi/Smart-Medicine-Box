@@ -41,6 +41,7 @@ open class BoardItemsAdapter(private val context: Context,
         }
     }
 
+    //to make our boards clickable
     fun setOnClickListener(onClickListener: OnClickListener) {
         this.onClickListener = onClickListener
     }
