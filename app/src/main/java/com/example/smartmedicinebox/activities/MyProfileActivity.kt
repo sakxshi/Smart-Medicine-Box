@@ -83,5 +83,7 @@ class MyProfileActivity : BaseActivity() {
         if(anyChangesMade){
             FirestoreClass().updateUserProfileData(this, userHashMap)
         }
+        else
+            hideProgressDialog()
     }
 }

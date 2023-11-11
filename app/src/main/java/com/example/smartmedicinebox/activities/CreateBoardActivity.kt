@@ -56,6 +56,8 @@ class CreateBoardActivity : BaseActivity() {
 
     }
 
+
+
     private fun setUpActionBar(){
 
         val toolbarCreateBoardActivity = binding.toolbarCreateBoardActivity
@@ -83,6 +85,8 @@ class CreateBoardActivity : BaseActivity() {
         val alarmMin = timePicker.minute.toString()
 
         val alarmTime = "$alarmHour : $alarmMin"
+
+
 
         //preparing the board
         var board = Board(
@@ -124,7 +128,7 @@ class CreateBoardActivity : BaseActivity() {
             val intent = Intent(this, AlarmReceiver::class.java)
             pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
-            time = calendar.timeInMillis - calendar.timeInMillis % 60_000
+            time = calendar.timeInMillis - calendar.timeInMillis % 60000
 
             if(System.currentTimeMillis() > time!!){
                 time = if(Calendar.AM_PM == 0){
@@ -146,7 +150,7 @@ class CreateBoardActivity : BaseActivity() {
             val sysMin = currentTime.minute.toString()
 
             //alarm bs not working
-            if (sysHour == timePicker.hour.toString() && sysMin == timePicker.minute.toString()) {
+            if (!(sysHour == timePicker.hour.toString() && sysMin == timePicker.minute.toString())) {
 
                 AlarmReceiver().onReceive(this, intent)
                         alarmManager !!. setRepeating (AlarmManager.RTC_WAKEUP, time!!, 1000, pendingIntent)

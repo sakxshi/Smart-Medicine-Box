@@ -1,6 +1,6 @@
 package com.example.smartmedicinebox.activities
 
-import android.content.Intent
+import android.app.Activity
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
@@ -14,6 +14,8 @@ class DetailsToDisplayActivity : BaseActivity() {
 
     private lateinit var binding: ActivityDetailsToDisplayBinding
 
+    private lateinit var mBoardDetails: Board
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,6 +23,7 @@ class DetailsToDisplayActivity : BaseActivity() {
         binding = ActivityDetailsToDisplayBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
 
         var boardDocumentID = ""
         if(intent.hasExtra(Constants.DOCUMENT_ID)){
@@ -31,9 +34,11 @@ class DetailsToDisplayActivity : BaseActivity() {
 
         FirestoreClass().getBoardDetails(this, boardDocumentID)
 
+        FirestoreClass().loadBoardDetails(this, false, boardDocumentID)
+
         binding.btnDtdOkay.setOnClickListener{
             showProgressDialog(resources.getString(R.string.please_wait))
-            startActivity(Intent(this, MainActivity::class.java))
+            updateBoard()
         }
 
     }
@@ -59,16 +64,87 @@ class DetailsToDisplayActivity : BaseActivity() {
     fun setDetailsInUI(board: Board) {
 
 
-        binding.dtdName.text = "Medicine Name: ${board.medsName}"
+        mBoardDetails = board
+        binding.dtdName.setText(board.medsName)
+        binding.dtdPrescribedFor.setText(board.prescribedFor)
+        binding.dtdPrescribedBy.setText(board.prescribedBy)
+
+        /*binding.dtdName.text = "Medicine Name: ${board.medsName}"
         binding.dtdPrescribedFor.text = "Prescribed For: ${board.prescribedFor}"
         binding.dtdPrescribedBy.text = "Prescribed By: ${board.prescribedBy}"
-        binding.dtdTime.text = "Time: ${board.time}"
+        binding.dtdTime.text = "Time: ${board.time}" */
     }
 
     fun boardDetails(board: Board){
         hideProgressDialog()
         setUpActionBar(board.medsName)
     }
+
+    fun updateBoard(){
+
+
+        val userHashMap = HashMap<String, Any>()
+
+        var anyChangesMade = false
+
+        var boardDocumentID = ""
+        if(intent.hasExtra(Constants.DOCUMENT_ID)){
+            boardDocumentID = intent.getStringExtra(Constants.DOCUMENT_ID)!!
+        }
+
+        if(binding.dtdName.text.toString() != mBoardDetails.medsName) {
+
+            userHashMap[Constants.MEDSNAME] = binding.dtdName.text.toString()
+            anyChangesMade = true
+
+        }
+        if(binding.dtdPrescribedFor.text.toString() != mBoardDetails.prescribedFor) {
+
+            userHashMap[Constants.PRESCRIBEDFOR] = binding.dtdPrescribedFor.text.toString()
+            anyChangesMade = true
+
+        }
+        if(binding.dtdPrescribedBy.text.toString() != mBoardDetails.prescribedBy) {
+
+            userHashMap[Constants.PRESCRIBEDBY] = binding.dtdPrescribedBy.text.toString()
+            anyChangesMade = true
+
+        }
+
+        if(anyChangesMade){
+            FirestoreClass().updateBoardDetails(this, userHashMap, boardDocumentID)
+        }
+        else
+            hideProgressDialog()
+
+    }
+
+    fun boardUpdateSuccess(){
+        hideProgressDialog()
+        setResult(Activity.RESULT_OK)
+    }
+
+    fun updateNavigationBoardDetails(board: Board, readBoardsList: Boolean){
+
+        //use glide to update the user's image
+        //go through the documentation of glide
+
+        mBoardDetails = board
+
+        mBoardDetails = board
+        binding.dtdName.setText(board.medsName)
+        binding.dtdPrescribedFor.setText(board.prescribedFor)
+        binding.dtdPrescribedBy.setText(board.prescribedBy)
+
+
+        if(readBoardsList){
+            showProgressDialog(resources.getString(R.string.please_wait))
+
+        }
+
+    }
+
+
 
 
 

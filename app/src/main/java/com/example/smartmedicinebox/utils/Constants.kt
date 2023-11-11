@@ -8,5 +8,9 @@ object Constants {
     const val ASSIGNED_TO: String = "assignedTo"
     const val DOCUMENT_ID: String = "documentID"
 
+    const val MEDSNAME: String = "medsName"
+    const val PRESCRIBEDFOR: String = "prescribedFor"
+    const val PRESCRIBEDBY: String = "prescribedBy"
+
 
 }

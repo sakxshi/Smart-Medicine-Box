@@ -84,6 +84,19 @@ class FirestoreClass {
 
     }
 
+    fun updateBoardDetails(activity: DetailsToDisplayActivity, userHashMap: HashMap<String, Any>, boardDocumentID: String){
+
+        mFirestore.collection(Constants.BOARDS)
+            .document(boardDocumentID)
+            .update(userHashMap)
+            .addOnSuccessListener {
+                Toast.makeText(activity, "Board Updated Successfully", Toast.LENGTH_LONG).show()
+                activity.boardUpdateSuccess()
+            }.addOnFailureListener{
+                Toast.makeText(activity, "Board Update failed", Toast.LENGTH_LONG).show()
+            }
+    }
+
     fun loadUserData(activity: Activity, readBoardsList: Boolean = false){
 
         mFirestore.collection(Constants.USERS)
@@ -108,6 +121,29 @@ class FirestoreClass {
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    fun loadBoardDetails(activity: Activity, readBoardsList: Boolean = false, documentID: String){
+
+
+
+        mFirestore.collection(Constants.BOARDS)
+            .document(documentID)
+            .get()
+            .addOnSuccessListener { document ->
+                val board = document.toObject(Board :: class.java)
+
+                when(activity){
+
+                    is DetailsToDisplayActivity ->{
+                        activity.setDetailsInUI(document.toObject(Board::class.java)!!)
+
+                    }
+                }
+
+            }
+    }
+
+
     fun getCurrentUserID() : String {
 
         val currentUser = FirebaseAuth.getInstance().currentUser
@@ -117,6 +153,7 @@ class FirestoreClass {
         }
         return currentUserID
     }
+
 
     fun createBoard(activity: CreateBoardActivity, board: Board){
         mFirestore.collection(Constants.BOARDS)
